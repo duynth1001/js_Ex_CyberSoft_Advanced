@@ -207,13 +207,37 @@ function exe4Calculation_handler(){
     var tempDistanceY = dataList[i]['coorY']
     var finalDistance = Math.sqrt(Math.pow(dataList[3]['coorX']-tempDistanceX,2)+Math.pow(dataList[3]['coorY']-tempDistanceY,2))    
     finalDistance=finalDistance.toFixed(2)
-    var tempStu;
-    tempStu = {'name':dataList[i]['name'],'distance':finalDistance}
-    distanceList.push(tempStu)
+    distanceList.push({'name':dataList[i]['name'],'distance':finalDistance})
   }
-  distanceList.sort(function(a, b){return b.distance-a.distance})
+let list_finalDistrance = [];
+for (let index = 0; index < distanceList.length; index++) {
+ list_finalDistrance.push(distanceList[index]['distance'])
+}
+const max = Math.max(...list_finalDistrance);
+var allAreEqual= (array) => {
+  const result = array.every(element => {
+    if (element === array[0]) {
+      return true;
+    }
+  });
+
+  return result;
+}
+if(allAreEqual(list_finalDistrance))
+{
+  document.getElementById('exe4Result').innerHTML=" Khoảng cách đến trường của ba sinh viên bằng nhau"
+}
+else{
+  var resStr=''
+  distanceList.forEach(
+    (element) => {
+    if(element.distance==max)
+    resStr+=element.name+','
+  })
+  resStr=resStr.slice(0,-1)
   document.getElementById('exe4Result').innerHTML=`
-  Sinh viên xa trường nhất là: ${distanceList[0]['name']}
+    Sinh viên xa trường nhất là: ${resStr}
   `
+}
 }
 document.getElementById('exe4Calculation').addEventListener('click',exe4Calculation_handler)
